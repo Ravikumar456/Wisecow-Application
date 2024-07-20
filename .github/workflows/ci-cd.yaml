@@ -41,7 +41,28 @@ jobs:
     - name: Set up Kubeconfig
       run: |
         mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+        echo "
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: ${{ secrets.KUBECONFIG_CA_CRT }}
+    server: https://192.168.58.2:8443
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    namespace: default
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: minikube
+  user:
+    client-certificate-data: ${{ secrets.KUBECONFIG_CLIENT_CRT }}
+    client-key-data: ${{ secrets.KUBECONFIG_CLIENT_KEY }}
+" > $HOME/.kube/config
 
     - name: Deploy to Kubernetes
       run: |
