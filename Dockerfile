@@ -1,12 +1,28 @@
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
+# Install necessary packages
 RUN apt-get update && \
-    apt-get install -y cowsay fortune netcat && \
+    apt-get install -y \
+    cowsay \
+    fortune \
+    netcat-openbsd \
+    bash && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY wisecow.sh /app/wisecow.sh
-RUN chmod +x /app/wisecow.sh
-WORKDIR /app
-CMD ["./wisecow.sh"]
+# Add /usr/games to PATH
+ENV PATH="/usr/games:${PATH}"
+
+# Copy the shell script into the container
+COPY wisecow.sh /usr/local/bin/wisecow.sh
+
+# Make the shell script executable
+RUN chmod +x /usr/local/bin/wisecow.sh
+
+# Expose the port that the server will listen on
+EXPOSE 4499
+
+# Run the shell script
+CMD ["/usr/local/bin/wisecow.sh"]
+
 
