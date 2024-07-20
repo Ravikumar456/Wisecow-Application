@@ -44,7 +44,7 @@ jobs:
         echo "apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: ${{ secrets.KUBECONFIG_CA_CRT }}
+    certificate-authority-data: ${KUBECONFIG_CA_CRT}
     server: https://192.168.58.2:8443
   name: minikube
 contexts:
@@ -59,8 +59,12 @@ preferences: {}
 users:
 - name: minikube
   user:
-    client-certificate-data: ${{ secrets.KUBECONFIG_CLIENT_CRT }}
-    client-key-data: ${{ secrets.KUBECONFIG_CLIENT_KEY }}" > $HOME/.kube/config
+    client-certificate-data: ${KUBECONFIG_CLIENT_CRT}
+    client-key-data: ${KUBECONFIG_CLIENT_KEY}" > $HOME/.kube/config
+      env:
+        KUBECONFIG_CA_CRT: ${{ secrets.KUBECONFIG_CA_CRT }}
+        KUBECONFIG_CLIENT_CRT: ${{ secrets.KUBECONFIG_CLIENT_CRT }}
+        KUBECONFIG_CLIENT_KEY: ${{ secrets.KUBECONFIG_CLIENT_KEY }}
 
     - name: Deploy to Kubernetes
       run: |
