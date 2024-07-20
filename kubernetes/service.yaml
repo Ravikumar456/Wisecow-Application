@@ -7,6 +7,9 @@ spec:
     app: wisecow
   ports:
     - protocol: TCP
-      port: 443
-      targetPort: 4499
+      port: 80         # Internal HTTP port
+      targetPort: 4499 # Port on the container
+    - protocol: TCP
+      port: 443        # Internal HTTPS port
+      targetPort: 4499 # Port on the container
   type: NodePort

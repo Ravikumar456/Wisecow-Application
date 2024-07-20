@@ -5,6 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - mrsja.xyz
@@ -19,4 +20,4 @@ spec:
           service:
             name: wisecow-service
             port:
-              number: 80
+              number: 443
