@@ -39,6 +39,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Kubeconfig
+      env:
+        KUBECONFIG_CA_CRT: ${{ secrets.KUBECONFIG_CA_CRT }}
+        KUBECONFIG_CLIENT_CRT: ${{ secrets.KUBECONFIG_CLIENT_CRT }}
+        KUBECONFIG_CLIENT_KEY: ${{ secrets.KUBECONFIG_CLIENT_KEY }}
       run: |
         mkdir -p $HOME/.kube
         echo "apiVersion: v1
@@ -61,10 +65,6 @@ users:
   user:
     client-certificate-data: ${KUBECONFIG_CLIENT_CRT}
     client-key-data: ${KUBECONFIG_CLIENT_KEY}" > $HOME/.kube/config
-      env:
-        KUBECONFIG_CA_CRT: ${{ secrets.KUBECONFIG_CA_CRT }}
-        KUBECONFIG_CLIENT_CRT: ${{ secrets.KUBECONFIG_CLIENT_CRT }}
-        KUBECONFIG_CLIENT_KEY: ${{ secrets.KUBECONFIG_CLIENT_KEY }}
 
     - name: Deploy to Kubernetes
       run: |
