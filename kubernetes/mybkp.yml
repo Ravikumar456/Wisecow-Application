@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wisecow-ingress
+  namespace: dev
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  tls:
+  - hosts:
+    - myschool2345.xyz
+    secretName: wisecow-tls
+
+  rules:
+  - host: myschool2345.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wisecow-service
+            port:
+              number: 80
+        
+
